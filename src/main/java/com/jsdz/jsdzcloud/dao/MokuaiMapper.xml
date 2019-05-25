@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsdz.jsdzcloud.dao.MokuaiMapper">
+
+
+	<insert id="insertmokuai" parameterType="com.jsdz.jsdzcloud.bean.Mokuai">
+		insert into mokuai
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="mokuainame != null">
+				mokuainame,
+			</if>
+			<if test="peizhi != null">
+				peizhi,
+			</if>
+			<if test="menuData != null">
+				menuData,
+			</if>
+			<if test="anniuData != null">
+				anniuData,
+			</if>
+			<if test="showData != null">
+				showData,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="mokuainame != null">
+				#{mokuainame},
+			</if>
+			<if test="peizhi != null">
+				#{peizhi},
+			</if>
+			<if test="menuData != null">
+				#{menuData},
+			</if>
+			<if test="anniuData != null">
+				#{anniuData},
+			</if>
+			<if test="showData != null">
+				#{showData},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deletemokuai" parameterType="com.jsdz.jsdzcloud.bean.Mokuai">
+		delete from mokuai where
+		id = #{id}
+	</delete>
+
+	<update id="updatemokuai" parameterType="com.jsdz.jsdzcloud.bean.Mokuai">
+		UPDATE mokuai
+		<set>
+			<if test="mokuainame != null">
+				mokuainame = #{mokuainame,jdbcType=VARCHAR},
+			</if>
+			<if test="peizhi != null">
+				peizhi = #{peizhi,jdbcType=VARCHAR},
+			</if>
+			<if test="menuData != null">
+				menuData = #{menuData,jdbcType=VARCHAR},
+			</if>
+			<if test="anniuData != null">
+				anniuData = #{anniuData,jdbcType=VARCHAR},
+			</if>
+			<if test="showData != null">
+				showData = #{showData,jdbcType=VARCHAR},
+			</if>
+
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="selectmokuai" parameterType="com.jsdz.jsdzcloud.bean.Mokuai"
+		resultType="com.jsdz.jsdzcloud.bean.Mokuai">
+		select * from mokuai
+		<where>
+			1=1
+			and mokuainame != '管理'
+			<if test="id!=null">
+				and id = #{id}
+			</if>
+		</where>
+		ORDER BY id desc
+	</select>
+
+
+</mapper>

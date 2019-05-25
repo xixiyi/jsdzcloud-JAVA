@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsdz.jsdzcloud.dao.UserLoginMapper">
+	<resultMap type="com.jsdz.jsdzcloud.bean.User" id="usermap">
+		<id column="uid" property="uid" jdbcType="INTEGER" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="telphone" property="telphone"
+			jdbcType="VARCHAR" />
+		<result column="password" property="password"
+			jdbcType="VARCHAR" />
+		<result column="userType" property="usertype"
+			jdbcType="INTEGER" />
+		<result column="username" property="username"
+			jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="deliveryaddress" property="deliveryaddress"
+			jdbcType="VARCHAR" />
+		<result column="bank" property="bank" jdbcType="VARCHAR" />
+		<result column="banknum" property="banknum" jdbcType="VARCHAR" />
+		<result column="accountname" property="accountname"
+			jdbcType="VARCHAR" />
+		<result column="dengji" property="dengji" jdbcType="INTEGER" />
+		<result column="otherusername" property="otherusername"
+			jdbcType="VARCHAR" />
+		<result column="otheruserphone" property="otheruserphone"
+			jdbcType="VARCHAR" />
+		<result column="taxidennum" property="taxidennum"
+			jdbcType="VARCHAR" />
+		<result column="taxheader" property="taxheader"
+			jdbcType="VARCHAR" />
+		<result column="invenaddress" property="invenaddress" />
+		<result column="authentication" property="authentication" />
+		<result column="photo" property="photo" />
+		<result column="email" property="email" />
+		<result column="errormsg" property="errormsg" />
+		<result column="accountmanager" property="accountmanagerid" />
+		<result column="tardy" property="tardy" />
+		<result column="picistaust" property="picistaust" />
+		<result column="maijialiuyan" property="maijialiuyan" />
+		<result column="zhucetime" property="zhucetime" />
+		<result column="xianshikehu" property="xianshikehu" />
+		<result column="status" property="status" />
+		<result column="updateinven" property="updateinven" />
+		<result column="leftnav" property="leftnav" />
+		<result column="yufukuan" property="yufukuan" />
+		<result column="edu" property="edu" />
+		<result column="zhangkuanzongji" property="zhangkuanzongji" />
+		<result column="zhangkuanzongjii" property="zhangkuanzongjii" />
+		<result column="pinpainame" property="pinpainame" />
+		<result column="xiliename" property="xiliename" />
+		<result column="kucunname" property="kucunname" />
+		<result column="kehuname" property="kehuname" />
+		<result column="xianshijiage" property="xianshijiage" />
+		<result column="yonghubeizhu" property="yonghubeizhu" />
+		<result column="beizhutime" property="beizhutime" />
+		<result column="qianguazhangleiji" property="qianguazhangleiji" />
+		<result column="shouhuodizhi" property="shouhuodizhi" />
+		<result column="paymethod" property="paymethod" />
+		<result column="ip" property="ip" />
+		<result column="isphone" property="isphone" />
+		<result column="dingdanuser" property="dingdanuser" />
+		<result column="bumenname" property="bumenname" />
+		<result column="baobiao" property="baobiao" />
+		<result column="chuanzhen" property="chuanzhen" />
+		<result column="headphoto" property="headphoto" />
+		<result column="miaoshu" property="miaoshu" />
+		<result column="leftcaidan" property="leftcaidan" />
+		<result column="rightcaidan" property="rightcaidan" />
+		<result column="dbid" property="dbid" />
+		<result column="name" property="name" />
+		<result column="company" property="company" />
+		<result column="istuijianren" property="istuijianren" />
+		<result column="fukuantime" property="fukuantime" />
+		<result column="isfukuan" property="isfukuan" />
+		<association property="accountmanager"
+			resultMap="accountmanagermap"></association>
+		<association column="grade" property="grade"
+			resultMap="grademap"></association>
+		<association column="mokuai" property="mokuai"
+			resultMap="mokuaimap"></association>
+	</resultMap>
+
+	<resultMap type="com.jsdz.jsdzcloud.bean.Accountmanager"
+		id="accountmanagermap">
+		<id column="accountmanagerid" property="accountmanagerid" />
+		<result column="accountmanagername"
+			property="accountmanagername" />
+		<result column="accountmanagerphone"
+			property="accountmanagerphone" />
+	</resultMap>
+
+	<resultMap type="com.jsdz.jsdzcloud.bean.Grade" id="grademap">
+		<id column="dengjiid" property="dengjiid" />
+		<result column="dengjiname" property="dengjiname" />
+	</resultMap>
+	<resultMap type="com.jsdz.jsdzcloud.bean.Mokuai"
+		id="mokuaimap">
+		<id column="id" property="id" />
+		<result column="mokuainame" property="mokuainame" />
+		<result column="menuData" property="menuData" />
+		<result column="showData" property="showData" />
+		<result column="anniuData" property="anniuData" />
+		<result column="peizhi" property="peizhi" />
+	</resultMap>
+	<select id="selectAllStudent" parameterType="com.jsdz.jsdzcloud.bean.User"
+		resultMap="usermap">
+		select * from user u
+		join grade on dengji=dengjiid
+		JOIN accountmanager a
+		on
+		u.accountmanager= a.accountmanagerid
+		left join (
+		SELECT
+		jxsid,sum(-qianguazhang) zhangkuanzongjii from sport_order where
+		status !=3 and `status` !=5 and qianguazhang &lt; 0
+		GROUP BY jxsid) c
+		on u.uid = c.jxsid
+		where userType = 1 and
+		u.status=1
+		<if test="username != null">
+			and username like #{username}
+		</if>
+		<if test="accountmanagerid != null and accountmanagerid !=0">
+			and u.accountmanager = #{accountmanagerid}
+		</if>
+		<if test="accountname != null">
+			and a.accountmanagername like #{accountname}
+		</if>
+		<if test="address != null">
+			and u.address like #{address}
+		</if>
+		<if test="phone != null">
+			and u.phone like #{phone}
+		</if>
+		<if test="dingdanquanxianuser != null">
+			and u.username in
+			<foreach collection="dingdanquanxianuser" item="xiliename"
+				index="index" open="(" close=")" separator=",">
+				'${xiliename}'
+			</foreach>
+		</if>
+		<if test="uid != null">
+			and uid = #{uid}
+		</if>
+		order by uid desc
+	</select>
+	<!-- 查询所有游客 -->
+	<select id="selectyoukeuser" parameterType="com.jsdz.jsdzcloud.bean.User"
+		resultMap="usermap">
+		select * from user u
+		where userType = 3
+		<if test="username != null">
+			and username = #{username}
+		</if>
+		order by uid desc
+	</select>
+	<update id="updateuserinstatus" parameterType="com.jsdz.jsdzcloud.bean.User">
+		update user
+		<set>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="accountmanager.accountmanagerid != null">
+				accountmanager = #{accountmanager.accountmanagerid},
+			</if>
+			<if test="usertype != null">
+				usertype = #{usertype},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="authentication != null">
+				authentication = #{authentication},
+			</if>
+		</set>
+		where uid = #{uid}
+	</update>
+	<select id="selectsuoyouStudent" parameterType="com.jsdz.jsdzcloud.bean.User"
+		resultMap="usermap">
+		select * from user u
+		left JOIN mokuai m on u.leftnav=m.id
+		where userType
+		= 2
+		and uid !=1
+		and status = 1
+		<if test="username !=null and username !=''">
+			and username like CONCAT('%',#{username},'%')
+		</if>
+		<if test="phone != null and phone !=''">
+			and phone like CONCAT('%',#{phone},'%')
+		</if>
+		<if test="mokuainame != null and mokuainame !=''">
+			and mokuainame like CONCAT('%',#{mokuainame},'%')
+		</if>
+	</select>
+
+	<select id="login" resultMap="usermap" parameterType="com.jsdz.jsdzcloud.bean.User">
+		select * from user u
+		left JOIN mokuai m on u.leftnav=m.id
+		where
+		phone=#{phone}
+		<if test="password!=null and ''!=password">
+			and password=#{password}
+		</if>
+		<if test="status == null">
+			and u.status = 1
+		</if>
+		<if test="status ==13">
+			and u.status in (1,2)
+		</if>
+
+	</select>
+
+	<select id="selectuserbyid" resultMap="usermap"
+		parameterType="int">
+		SELECT * from user u
+		where uid=#{uid}
+	</select>
+
+	<select id="selectuserby" resultMap="usermap"
+		parameterType="int">
+		SELECT * from user u,accountmanager a where
+		u.accountmanager=a.accountmanagerid
+		and uid=#{uid}
+	</select>
+
+	<insert id="regist" parameterType="com.jsdz.jsdzcloud.bean.User" useGeneratedKeys="true"
+		keyProperty="uid">
+		insert into user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="telphone != null">
+				telphone,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="usertype != null">
+				userType,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="deliveryaddress != null">
+				deliveryaddress,
+			</if>
+			<if test="bank != null">
+				bank,
+			</if>
+			<if test="banknum != null">
+				banknum,
+			</if>
+			<if test="accountname != null">
+				accountname,
+			</if>
+			<if test="dengji != null">
+				dengji,
+			</if>
+			<if test="accountmanager.accountmanagerid != null">
+				accountmanager,
+			</if>
+			<if test="otherusername != null">
+				otherusername,
+			</if>
+			<if test="otheruserphone != null">
+				otheruserphone,
+			</if>
+			<if test="taxidennum != null">
+				taxidennum,
+			</if>
+			<if test="taxheader != null">
+				taxheader,
+			</if>
+			<if test="authentication != null">
+				authentication,
+			</if>
+			<if test="invenaddress != null">
+				invenaddress,
+			</if>
+			<if test="photo != null">
+				photo,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="errormsg != null">
+				errormsg,
+			</if>
+			<if test="tardy != null">
+				tardy,
+			</if>
+			<if test="picistaust != null">
+				picistaust,
+			</if>
+			<if test="maijialiuyan != null">
+				maijialiuyan,
+			</if>
+			<if test="zhucetime != null">
+				zhucetime,
+			</if>
+			<if test="leftnav != null">
+				leftnav,
+			</if>
+			<if test="pinpainame != null">
+				pinpainame,
+			</if>
+			<if test="xiliename != null">
+				xiliename,
+			</if>
+			<if test="kucunname != null">
+				kucunname,
+			</if>
+			<if test="shouhuodizhi != null">
+				shouhuodizhi,
+			</if>
+			<if test="yufukuan != null">
+				yufukuan,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="company != null">
+				company,
+			</if>
+			<if test="dbid != null">
+				dbid,
+			</if>
+			<if test="istuijianren != null">
+				istuijianren,
+			</if>
+			<if test="fukuantime != null">
+				fukuantime,
+			</if>
+			<if test="isfukuan != null">
+				isfukuan,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null">
+				#{uid,jdbcType=INTEGER},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="telphone != null">
+				#{telphone,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="usertype != null">
+				#{usertype,jdbcType=INTEGER},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="deliveryaddress != null">
+				#{deliveryaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="bank != null">
+				#{bank,jdbcType=VARCHAR},
+			</if>
+			<if test="banknum != null">
+				#{banknum,jdbcType=VARCHAR},
+			</if>
+			<if test="accountname != null">
+				#{accountname,jdbcType=VARCHAR},
+			</if>
+			<if test="dengji != null">
+				#{dengji,jdbcType=INTEGER},
+			</if>
+			<if test="accountmanager.accountmanagerid != null">
+				#{accountmanager.accountmanagerid},
+			</if>
+			<if test="otherusername != null">
+				#{otherusername,jdbcType=VARCHAR},
+			</if>
+			<if test="otheruserphone != null">
+				#{otheruserphone,jdbcType=VARCHAR},
+			</if>
+			<if test="taxidennum != null">
+				#{taxidennum,jdbcType=VARCHAR},
+			</if>
+			<if test="taxheader != null">
+				#{taxheader,jdbcType=VARCHAR},
+			</if>
+			<if test="authentication != null">
+				#{authentication},
+			</if>
+			<if test="invenaddress != null">
+				#{invenaddress},
+			</if>
+			<if test="photo != null">
+				#{photo},
+			</if>
+			<if test="email != null">
+				#{email},
+			</if>
+			<if test="errormsg != null">
+				#{errormsg},
+			</if>
+			<if test="tardy != null">
+				#{tardy},
+			</if>
+			<if test="picistaust != null">
+				#{picistaust},
+			</if>
+			<if test="maijialiuyan != null">
+				#{maijialiuyan,jdbcType=VARCHAR},
+			</if>
+			<if test="zhucetime != null">
+				#{zhucetime,jdbcType=VARCHAR},
+			</if>
+			<if test="leftnav != null">
+				#{leftnav},
+			</if>
+			<if test="pinpainame != null">
+				#{pinpainame},
+			</if>
+			<if test="xiliename != null">
+				#{xiliename},
+			</if>
+			<if test="kucunname != null">
+				#{kucunname},
+			</if>
+			<if test="shouhuodizhi != null">
+				#{shouhuodizhi},
+			</if>
+			<if test="yufukuan != null">
+				#{yufukuan},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="company != null">
+				#{company},
+			</if>
+			<if test="dbid != null">
+				#{dbid},
+			</if>
+			<if test="istuijianren != null">
+				#{istuijianren},
+			</if>
+			<if test="fukuantime != null">
+				#{fukuantime},
+			</if>
+			<if test="isfukuan != null">
+				#{isfukuan},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateaccountmanager" parameterType="com.jsdz.jsdzcloud.bean.Accountmanager">
+		update
+		accountmanager set status=2 where accountmanagerid=#{accountmanagerid}
+	</update>
+
+	<update id="updateaccountmanagername"
+		parameterType="com.jsdz.jsdzcloud.bean.Accountmanager">
+		update
+		accountmanager set status=1 where
+		accountmanagername=#{accountmanagername}
+	</update>
+
+	<insert id="insertgrade" parameterType="com.jsdz.jsdzcloud.bean.Grade">
+<!-- 		insert into
+		grade(dengjiname) values(#{dengjiname}) -->
+		insert into grade
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="dengjiid != null">
+				dengjiid,
+			</if>
+			<if test="dengjiname != null">
+				dengjiname,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="dengjiid != null">
+				#{dengjiid},
+			</if>
+			<if test="dengjiname != null">
+				#{dengjiname},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateuserinformation" parameterType="com.jsdz.jsdzcloud.bean.User">
+		update user
+		<set>
+			<if test="phone != null and phone !=''">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status !=''">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="chuanzhen != null and chuanzhen !=''">
+				chuanzhen = #{chuanzhen,jdbcType=VARCHAR},
+			</if>
+			<if test="telphone != null and telphone !=''">
+				telphone = #{telphone,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="usertype != null">
+				userType = #{usertype,jdbcType=INTEGER},
+			</if>
+			<if test="username != null and username !=''">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null and address !=''">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="deliveryaddress != null and deliveryaddress !=''">
+				deliveryaddress = #{deliveryaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="bank != null and bank !=''">
+				bank = #{bank,jdbcType=VARCHAR},
+			</if>
+			<if test="banknum != null and banknum !=''">
+				banknum = #{banknum,jdbcType=VARCHAR},
+			</if>
+			<if test="accountname != null and accountname !=''">
+				accountname = #{accountname},
+			</if>
+			<if test="dengji != null">
+				dengji = #{dengji,jdbcType=INTEGER},
+			</if>
+			<if test="accountmanager.accountmanagerid != null">
+				accountmanager =
+				#{accountmanager.accountmanagerid,jdbcType=INTEGER},
+			</if>
+			<if test="otherusername != null and otherusername !=''">
+				otherusername = #{otherusername,jdbcType=VARCHAR},
+			</if>
+			<if test="otheruserphone != null and otheruserphone !=''">
+				otheruserphone = #{otheruserphone,jdbcType=VARCHAR},
+			</if>
+			<if test="taxidennum != null and taxidennum !=''">
+				taxidennum = #{taxidennum,jdbcType=VARCHAR},
+			</if>
+			<if test="taxheader != null and taxheader !=''">
+				taxheader = #{taxheader,jdbcType=VARCHAR},
+			</if>
+			<if test="invenaddress !=null and invenaddress !=''">
+				invenaddress = #{invenaddress},
+			</if>
+			<if test="authentication !=null">
+				authentication = #{authentication},
+			</if>
+			<if test="email !=null and email !=''">
+				email = #{email},
+			</if>
+			<if test="photo !=null and photo !=''">
+				photo = #{photo},
+			</if>
+			<if test="errormsg !=null and errormsg !=''">
+				errormsg = #{errormsg},
+			</if>
+			<if test="tardy != null and tardy !=''">
+				tardy = #{tardy},
+			</if>
+			<if test="picistaust != null">
+				picistaust = #{picistaust},
+			</if>
+			<if test="xianshikehu != null">
+				xianshikehu = #{xianshikehu},
+			</if>
+			<if test="updateinven != null">
+				updateinven = #{updateinven},
+			</if>
+			<if test="leftnav != null">
+				leftnav = #{leftnav},
+			</if>
+			<if test="yufukuan != null">
+				yufukuan = #{yufukuan},
+			</if>
+			<if test="edu != null">
+				edu = #{edu},
+			</if>
+			<if test="zhangkuanzongji != null">
+				zhangkuanzongji = #{zhangkuanzongji},
+			</if>
+			<if test="pinpainame != null">
+				pinpainame = #{pinpainame},
+			</if>
+			<if test="xiliename != null">
+				xiliename = #{xiliename},
+			</if>
+			<if test="kucunname != null">
+				kucunname = #{kucunname},
+			</if>
+			<if test="xianshijiage != null">
+				xianshijiage = #{xianshijiage},
+			</if>
+			<if test="yonghubeizhu != null">
+				yonghubeizhu = #{yonghubeizhu},
+			</if>
+			<if test="beizhutime != null">
+				beizhutime = #{beizhutime},
+			</if>
+			<if test="qianguazhangleiji != null">
+				qianguazhangleiji = #{qianguazhangleiji},
+			</if>
+			<if test="shouhuodizhi != null">
+				shouhuodizhi = #{shouhuodizhi},
+			</if>
+			<if test="paymethod != null">
+				paymethod = #{paymethod},
+			</if>
+			<if test="ip != null">
+				ip = #{ip},
+			</if>
+			<if test="isphone != null">
+				isphone = #{isphone},
+			</if>
+			<if test="dingdanuser != null">
+				dingdanuser = #{dingdanuser},
+			</if>
+			<if test="bumenname != null">
+				bumenname = #{bumenname},
+			</if>
+			<if test="kehuname != null">
+				kehuname = #{kehuname},
+			</if>
+			<if test="baobiao != null">
+				baobiao = #{baobiao},
+			</if>
+			<if test="headphoto != null">
+				headphoto = #{headphoto},
+			</if>
+			<if test="miaoshu != null">
+				miaoshu = #{miaoshu},
+			</if>
+			<if test="leftcaidan != null">
+				leftcaidan = #{leftcaidan},
+			</if>
+			<if test="rightcaidan != null">
+				rightcaidan = #{rightcaidan},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="company != null">
+				company = #{company},
+			</if>
+			<if test="dbid != null">
+				dbid = #{dbid},
+			</if>
+			<if test="istuijianren != null">
+				istuijianren = #{istuijianren},
+			</if>
+			<if test="isfukuan != null">
+				isfukuan = #{isfukuan},
+			</if>
+			<if test="fukuantime != null">
+				fukuantime = #{fukuantime},
+			</if>
+		</set>
+		where uid = #{uid,jdbcType=INTEGER}
+	</update>
+
+	<!-- 查询所有的等级 -->
+	<select id="selectallgradde" resultType="com.jsdz.jsdzcloud.bean.Grade">
+		select
+		dengjiid,dengjiname from grade
+	</select>
+	<!-- 更新用户的等级 -->
+	<update id="updateuserdengji">
+		update user set dengji=#{1} where uid=#{0}
+	</update>
+	<!-- 通过客户的名字查询客户的id -->
+	<select id="selectuserbyusername" parameterType="String"
+		resultMap="usermap">
+		select * from user
+		join accountmanager ON
+		`user`.accountmanager=accountmanager.accountmanagerid
+		where username =
+		#{_parameter}
+	</select>
+
+	<!-- 通过推荐人的姓名，查询推荐人的id -->
+	<select id="selectaccountbyusername" parameterType="String"
+		resultMap="accountmanagermap">
+		select * from accountmanager where accountmanagername=
+		#{accountmanagername} and status=1
+	</select>
+
+	<!-- 添加推荐人 -->
+	<insert id="insertaccountmanager" parameterType="com.jsdz.jsdzcloud.bean.Accountmanager">
+		insert into
+		accountmanager(accountmanagername,accountmanagerphone)
+		values(#{accountmanagername},#{accountmanagerphone})
+	</insert>
+
+	<!-- 查看推荐人 -->
+	<select id="selectaccountmanager" parameterType="com.jsdz.jsdzcloud.bean.Accountmanager"
+		resultType="com.jsdz.jsdzcloud.bean.Accountmanager">
+		select * from accountmanager
+		where status=1
+		<if test="accountmanagername!=null">
+			and accountmanagername=#{accountmanagername}
+		</if>
+		<if test="accountmanagerid != null">
+			and accountmanagerid = #{accountmanagerid}
+		</if>
+	</select>
+
+	<!-- 删除文员 -->
+	<delete id="deletewenyuan" parameterType="int">
+		delete from user where
+		uid=#{uid}
+	</delete>
+
+	<!-- 查询可以赊账的用户 -->
+<!-- 	
+	<select id="selecttardyuser" parameterType="nameAndTime"
+		resultType="com.jsdz.jsdzcloud.bean.User">
+		SELECT
+		u.uid,u.username,u.yufukuan,u.edu,u.status,u.tardy,a.zhangkuanzongji
+		from user u LEFT JOIN(
+		SELECT jxsid,sum(-qianguazhang) zhangkuanzongji
+		from sport_order where
+		status !=3 and `status` !=5 and qianguazhang
+		&lt; 0
+		GROUP BY jxsid
+		) a on u.uid = a.jxsid
+		where a.zhangkuanzongji > 0
+		<if test="tardy == null"> and `user`.tardy=2 </if>
+		<if test="tardy != null">
+			and u.tardy=#{tardy}
+		</if>
+		<if test="accountmanagerid != null">
+			and u.accountmanager = #{accountmanagerid}
+		</if>
+		<if test="username != null and username !=''">
+			and u.username like CONCAT('%',#{username},'%')
+		</if>
+	</select>
+ -->
+	<select id="selectgrade" parameterType="String"
+		resultType="com.jsdz.jsdzcloud.bean.Grade">
+		select * from grade where dengjiname = #{dengjiname}
+	</select>
+
+	<select id="selecttuijianrenuser" resultType="map">
+		select
+		username,phone from user where accountmanager = #{accountmanager} and
+		status=1 and username like #{username}
+	</select>
+
+	<delete id="deleteaccountmanager" parameterType="com.jsdz.jsdzcloud.bean.Accountmanager">
+		delete from
+		accountmanager where
+		accountmanagerid=#{accountmanagerid}
+	</delete>
+
+
+
+	<select id="selectjiansuotuijianren" resultType="com.jsdz.jsdzcloud.bean.Accountmanager">
+		select * from accountmanager
+		where 1=1
+		<if test="username != null">
+			and accountmanagername like CONCAT('%',#{username},'%')
+		</if>
+	</select>
+
+	<select id="creatNewDatabase" parameterType="String">
+		create database
+		jjjj${dbid}
+	</select>
+
+	<select id="selectAccountmanager" resultType="com.jsdz.jsdzcloud.bean.Accountmanager">
+		SELECT
+	*
+FROM
+	accountmanager a
+LEFT JOIN `user` u ON a.accountmanagerphone = u.phone and a.accountmanagername = u.username
+where  u.`status` = 1
+	</select>
+
+
+
+
+
+
+
+</mapper>

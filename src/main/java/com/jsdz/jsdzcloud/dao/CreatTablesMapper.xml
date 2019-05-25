@@ -1,0 +1,1636 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsdz.jsdzcloud.dao.CreatTablesMapper">
+
+<select id="creatUsertable">
+CREATE TABLE `user` (
+  `uid` int(11) NOT NULL AUTO_INCREMENT COMMENT '初始注册的id',
+  `phone` varchar(25) DEFAULT NULL COMMENT '电话，根据电话进行登录',
+  `telphone` varchar(255) DEFAULT NULL COMMENT '座机',
+  `password` varchar(100) DEFAULT NULL COMMENT '密码',
+  `userType` int(11) DEFAULT NULL COMMENT '注册者的类型，1商户，2生产商',
+  `username` varchar(255) DEFAULT '',
+  `address` varchar(255) DEFAULT '' COMMENT '公司地址',
+  `deliveryaddress` varchar(255) DEFAULT NULL COMMENT '收货地址',
+  `bank` varchar(255) DEFAULT '',
+  `banknum` varchar(255) DEFAULT '',
+  `accountname` varchar(255) DEFAULT NULL COMMENT '开户名称',
+  `dengji` int(11) DEFAULT '1',
+  `accountmanager` int(11) DEFAULT '0' COMMENT '上游业务员',
+  `otherusername` varchar(255) DEFAULT NULL COMMENT '其他联系人姓名',
+  `otheruserphone` varchar(255) DEFAULT NULL COMMENT '其他联系人电话',
+  `taxidennum` varchar(255) DEFAULT NULL COMMENT '纳税人识别号',
+  `taxheader` varchar(255) DEFAULT NULL COMMENT '发票抬头',
+  `authentication` int(11) DEFAULT '1' COMMENT '认证',
+  `invenaddress` varchar(255) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `errormsg` varchar(255) DEFAULT NULL,
+  `tardy` int(11) DEFAULT '1',
+  `picistaust` int(11) DEFAULT NULL,
+  `maijialiuyan` varchar(255) DEFAULT NULL,
+  `zhucetime` varchar(255) DEFAULT NULL,
+  `xianshikehu` int(11) DEFAULT '2',
+  `logo` int(11) DEFAULT '1',
+  `status` int(11) DEFAULT '1',
+  `updateinven` int(11) DEFAULT '1',
+  `leftnav` int(11) DEFAULT '2',
+  `yufukuan` double(12,6) DEFAULT '0.000000',
+  `edu` double(36,6) DEFAULT '0.000000',
+  `zhangkuanzongji` double(36,6) DEFAULT '0.000000',
+  `pinpainame` longtext,
+  `xiliename` longtext,
+  `kucunname` longtext,
+  `xianshijiage` int(11) DEFAULT '1',
+  `yonghubeizhu` varchar(255) DEFAULT '',
+  `beizhutime` varchar(255) DEFAULT '',
+  `qianguazhangleiji` double DEFAULT '0',
+  `shouhuodizhi` varchar(255) DEFAULT NULL,
+  `paymethod` varchar(255) DEFAULT NULL,
+  `ip` varchar(255) DEFAULT '',
+  `isphone` int(11) DEFAULT '1',
+  `dingdanuser` varchar(255) DEFAULT NULL,
+  `kehuname` longtext,
+  `bumenname` varchar(255) DEFAULT NULL,
+  `baobiao` varchar(255) DEFAULT NULL,
+  `chuanzhen` varchar(255) DEFAULT NULL,
+  `headphoto` longtext,
+  `miaoshu` longtext,
+  `leftcaidan` longtext,
+  `rightcaidan` longtext,
+  `company` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `dbid` varchar(255) DEFAULT NULL,
+  `istuijianren` varchar(255) DEFAULT '否',
+  `fukuantime` varchar(255) DEFAULT NULL,
+  `isfukuan` int(11) DEFAULT '1',
+  PRIMARY KEY (`uid`),
+  UNIQUE KEY `usernameandphone` (`phone`,`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8 COMMENT='客户以及供应商的表'
+
+
+	
+</select>
+	
+	
+<select id="creatShopOrdertable">
+	CREATE TABLE `shop_order` (
+  `xhid` int(11) NOT NULL AUTO_INCREMENT COMMENT '一组订单的id',
+  `jxsid` int(11) NOT NULL COMMENT '下单人的id',
+  `shoptime` varchar(255) NOT NULL COMMENT '下单时间',
+  `tax` int(11) NOT NULL,
+  `ddtype` int(11) NOT NULL,
+  `datanotnull` int(11) DEFAULT NULL COMMENT '判断这个组订单有没有订单',
+  `shopstatus` int(11) NOT NULL COMMENT '1还没有接受，2已经接受，3历史订单',
+  `zilaid` int(11) NOT NULL COMMENT '自己提货为：2，发货为：1',
+  `chuinventime` varchar(255) DEFAULT NULL,
+  `tardystatus` int(11) DEFAULT NULL,
+  `allprice` double(12,2) DEFAULT '0.00',
+  `shoukuan` int(11) DEFAULT NULL,
+  `beizhu` longtext,
+  `kehuname` varchar(255) DEFAULT NULL,
+  `kehuphone` varchar(255) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  `daixia` int(11) DEFAULT '1',
+  `xianhuoheji` double(12,2) DEFAULT NULL,
+  `fucaiheji` double(12,2) DEFAULT NULL,
+  `orderzhihao` longtext,
+  `weight` double(12,0) DEFAULT '0',
+  `dayin` int(11) DEFAULT '1',
+  `yincang` int(11) DEFAULT '1',
+  `caigou` int(11) DEFAULT '1',
+  `shopmadandayin` int(11) DEFAULT '1',
+  `miaoshu` longtext,
+  `zhaiyao` longtext,
+  `productlocation` varchar(255) DEFAULT NULL,
+  `baocunfahuorenname` varchar(255) DEFAULT NULL,
+  `baocunfahuorenphone` varchar(255) DEFAULT NULL,
+  `baocuntitle` varchar(255) DEFAULT NULL,
+  `baocunshouhuorenname` varchar(255) DEFAULT NULL,
+  `baocunshouhuorenphone` varchar(255) DEFAULT NULL,
+  `baocunzhidanren` varchar(255) DEFAULT NULL,
+  `songhuodayin` int(11) DEFAULT '1',
+  `biaojijiaji` int(11) DEFAULT '1',
+  `isfukuan` int(11) DEFAULT '0',
+  `orderaccountid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`xhid`),
+  KEY `jxsidkey` (`jxsid`),
+  CONSTRAINT `jxsidkey` FOREIGN KEY (`jxsid`) REFERENCES `user` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2098 DEFAULT CHARSET=utf8 COMMENT='用他的id来确定哪些订单是一组的，即同一个人同时下得订单。'
+	
+</select>
+
+<select id="creatSportOrdertable">
+	CREATE TABLE `sport_order` (
+  `ddid` int(11) NOT NULL AUTO_INCREMENT COMMENT '订单id',
+  `xxid` int(11) DEFAULT NULL COMMENT '库存id',
+  `xhid` int(11) DEFAULT NULL COMMENT '这些订单和一个序号进行关联着，来确定此订单隶属于哪个订单组中',
+  `tardyid` int(11) DEFAULT NULL,
+  `productnum` varchar(255) DEFAULT NULL,
+  `pici` varchar(255) DEFAULT NULL COMMENT '批次',
+  `sportsquarenum` double(255,2) DEFAULT NULL COMMENT '平米数',
+  `sportsquarenumstring` varchar(255) DEFAULT '0*0',
+  `tax` int(11) DEFAULT NULL COMMENT '是否税票',
+  `address` varchar(255) DEFAULT NULL COMMENT '收货地址',
+  `time` varchar(255) DEFAULT NULL COMMENT '发货时间',
+  `liuyan` varchar(255) DEFAULT NULL COMMENT '留言',
+  `status` int(11) DEFAULT '1' COMMENT '状态',
+  `jxsid` int(11) DEFAULT NULL COMMENT '经销商id',
+  `yuanyin` varchar(255) DEFAULT NULL COMMENT '原因',
+  `gysid` varchar(11) DEFAULT NULL COMMENT '供应商id',
+  `realsportsquare` double(255,2) DEFAULT '0.00' COMMENT '实际发货量',
+  `allprice` double(255,2) DEFAULT NULL,
+  `unitprice` double(255,2) DEFAULT NULL,
+  `productfromlocation` varchar(255) DEFAULT NULL COMMENT '订单出库地址',
+  `wuliuname` varchar(255) DEFAULT NULL,
+  `wlnum` varchar(255) DEFAULT NULL,
+  `wlphone` varchar(255) DEFAULT NULL,
+  `sportyajin` double(255,2) DEFAULT '0.00',
+  `sportyukuan` double(255,2) DEFAULT '0.00',
+  `sportzila` int(11) DEFAULT NULL,
+  `shengchantime` int(11) DEFAULT NULL,
+  `chuinventime` varchar(255) DEFAULT ' ',
+  `getmoneystary` varchar(255) DEFAULT NULL,
+  `realallprice` double(255,2) DEFAULT '0.00',
+  `taxstatus` int(11) DEFAULT '1',
+  `sportorderstatus` int(11) DEFAULT '1',
+  `accountmanagerid` int(11) DEFAULT NULL,
+  `tardystatus` int(11) DEFAULT '1',
+  `maijialiuyan` varchar(255) DEFAULT NULL,
+  `xianhuoandfucai` int(11) DEFAULT '1',
+  `allonekcid` varchar(255) DEFAULT NULL,
+  `shouhuoren` varchar(255) DEFAULT NULL,
+  `shouhuophone` varchar(255) DEFAULT NULL,
+  `kehuname` varchar(255) DEFAULT NULL,
+  `kehuphone` varchar(255) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  `kuwei` varchar(255) DEFAULT NULL,
+  `orderbeizhu` varchar(2555) DEFAULT '',
+  `chengbenjia` double(24,2) DEFAULT '0.00',
+  `chengbenjine` double(24,2) DEFAULT '0.00',
+  `lirui` double(24,2) DEFAULT '0.00',
+  `qianguazhang` double(24,2) DEFAULT '0.00',
+  `jiedantime` varchar(255) DEFAULT NULL,
+  `weight` double(12,2) DEFAULT '0.00',
+  `zhihaoid` longtext,
+  `allcases` varchar(255) DEFAULT ' ',
+  `allweight` double(12,2) DEFAULT '0.00',
+  `danwei` varchar(255) DEFAULT '/平米',
+  `jiekuantime` varchar(255) DEFAULT NULL,
+  `kaipiaojine` double(12,2) DEFAULT '0.00',
+  `moreprice` varchar(255) DEFAULT '',
+  `juanshu` int(11) DEFAULT '0',
+  `yincang` int(11) DEFAULT '1',
+  `liruibianhong` int(11) DEFAULT '1',
+  `caigou` int(11) DEFAULT '1',
+  `carpaihao` varchar(255) DEFAULT NULL,
+  `zhihaodayin` int(11) DEFAULT '1',
+  `biaoqian` varchar(255) DEFAULT NULL,
+  `caijianmishu` varchar(255) DEFAULT NULL,
+  `yuanmishu` varchar(255) DEFAULT NULL,
+  `alljiage` varchar(255) DEFAULT NULL,
+  `ruku` int(11) DEFAULT '1',
+  `madandayintime` varchar(255) DEFAULT NULL,
+  `sportorderguige` varchar(255) DEFAULT NULL,
+  `sportorderproductname` varchar(255) DEFAULT ' ',
+  `jingshouren` varchar(255) DEFAULT NULL,
+  `pian` int(11) DEFAULT '1',
+  `kehuxinghao` varchar(255) DEFAULT NULL,
+  `jiezhuanyufukuanprice` double DEFAULT '0',
+  `shiyongyufukuanprice` double DEFAULT '0',
+  `molingprice` double(255,2) DEFAULT '0.00',
+  `productlocation` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ddid`),
+  KEY `xhidkey` (`xhid`),
+  CONSTRAINT `xhidkey` FOREIGN KEY (`xhid`) REFERENCES `shop_order` (`xhid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2561 DEFAULT CHARSET=utf8 COMMENT='现货订单表，用来记录每一个订单'
+	
+</select>
+
+<select id="creatAccountmanagertable">
+	CREATE TABLE `accountmanager` (
+  `accountmanagerid` int(11) NOT NULL AUTO_INCREMENT,
+  `accountmanagername` varchar(255) NOT NULL DEFAULT '',
+  `logo` int(11) DEFAULT '1',
+  `status` int(11) DEFAULT '1',
+  `accountmanagerphone` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`accountmanagerid`,`accountmanagername`),
+  UNIQUE KEY `accountmanagername` (`accountmanagername`,`logo`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+	
+</select>
+
+<select id="creatBancitable">
+CREATE TABLE `banci` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `banciname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+</select>
+
+<select id="creatBaosunbaoyitable">
+CREATE TABLE `baosunbaoyi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `productnum` varchar(255) DEFAULT NULL,
+  `squarenumstring` varchar(255) DEFAULT NULL,
+  `pici` varchar(255) DEFAULT NULL,
+  `zhaiyao` varchar(255) DEFAULT NULL,
+  `kcid` int(11) DEFAULT NULL,
+  `zhihaoid` varchar(255) DEFAULT NULL,
+  `zhihaosquarestring` varchar(255) DEFAULT NULL,
+  `zhihaoinfo` varchar(255) DEFAULT NULL,
+  `productlocation` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8
+</select>
+
+<select id="creatBeiyintable">
+	CREATE TABLE `beiyin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `beiyinname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+</select>
+
+<select id="creatBiaomianguangzedutable">
+	CREATE TABLE `biaomianguangze` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `biaomianguangzedu` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+</select>
+
+<select id="creatBumentable">
+CREATE TABLE `bumen` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bumenname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+</select>
+
+<select id="creatButietable">
+CREATE TABLE `butie` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `butiejine` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatContexttable">
+CREATE TABLE `context` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `context` longtext,
+  `title` varchar(255) DEFAULT NULL,
+  `summary` varchar(255) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `yueduliang` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatCustomordertable">
+CREATE TABLE `customorder` (
+  `dzid` int(11) NOT NULL AUTO_INCREMENT COMMENT '定制订单id',
+  `neworderspeid` int(11) DEFAULT NULL,
+  `dzddtype` int(11) DEFAULT NULL COMMENT '定制订单的类型',
+  `photo` varchar(255) DEFAULT NULL COMMENT '图片路径',
+  `backcheck` int(11) DEFAULT NULL COMMENT '背底选择',
+  `length` double(12,2) DEFAULT NULL COMMENT '长度',
+  `width` double(12,2) DEFAULT NULL COMMENT '宽度',
+  `squarenum` double(12,2) DEFAULT NULL COMMENT '平米数',
+  `reallysquarenum` double(12,2) DEFAULT NULL,
+  `mingxi` varchar(255) DEFAULT NULL,
+  `shengtime` varchar(255) DEFAULT NULL COMMENT '生产周期',
+  `address` varchar(255) DEFAULT NULL COMMENT '地址',
+  `newliuyan` varchar(255) DEFAULT NULL COMMENT '留言',
+  `jxsid` int(11) DEFAULT NULL COMMENT '经销商id、下单人id',
+  `gysid` varchar(11) DEFAULT '0' COMMENT '哪个文员处理的这个订单',
+  `newyuanyin` varchar(255) DEFAULT NULL,
+  `price` double(255,11) DEFAULT NULL,
+  `yajinprice` double(255,11) DEFAULT '0.00000000000',
+  `yukuanprice` double(255,11) DEFAULT '0.00000000000',
+  `allprice` double(255,11) DEFAULT NULL,
+  `ordernewstatus` int(11) DEFAULT '1',
+  `ordertax` int(11) DEFAULT NULL,
+  `zila` int(11) DEFAULT NULL,
+  `wuliunum` varchar(255) DEFAULT NULL,
+  `wuliuname` varchar(255) DEFAULT NULL,
+  `wuliuphone` varchar(255) DEFAULT NULL,
+  `shengchantime` int(11) DEFAULT NULL,
+  `realallprice` double(255,11) DEFAULT NULL,
+  `getmoneystary` varchar(255) DEFAULT NULL,
+  `taxstatus` int(11) DEFAULT '1',
+  `chuinventime` varchar(255) DEFAULT NULL,
+  `customorderstatus` int(11) DEFAULT '1',
+  `accountmanagerid` int(11) DEFAULT NULL,
+  `maijialiuyan` varchar(255) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  `chengbenjia` double(24,12) DEFAULT NULL,
+  `chengbenjine` double(24,12) DEFAULT NULL,
+  `lirui` double(24,12) DEFAULT NULL,
+  `qianguazhang` double(24,12) DEFAULT NULL,
+  PRIMARY KEY (`dzid`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatDatjiaotable">
+CREATE TABLE `daojiao` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `daojiaoname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatDiaohuoorderzitable">
+CREATE TABLE `diaohuoorderzi` (
+  `zuid` int(11) DEFAULT NULL,
+  `orderziid` int(11) NOT NULL AUTO_INCREMENT,
+  `productinid` int(11) DEFAULT NULL,
+  `xxid` int(11) DEFAULT NULL,
+  `newkcid` int(11) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `squarenum` double DEFAULT '0',
+  `squarenumstring` varchar(255) DEFAULT NULL,
+  `productlocation` varchar(255) DEFAULT NULL,
+  `pici` varchar(255) DEFAULT NULL,
+  `productnum` varchar(255) DEFAULT NULL,
+  `zhihaoid` longtext,
+  `zhihaoinfo` longtext,
+  `oldproductlocation` varchar(255) DEFAULT NULL,
+  `zhishu` int(11) DEFAULT '0',
+  `madandayintime` varchar(255) DEFAULT NULL,
+  `madandayinstatus` int(11) DEFAULT '1',
+  PRIMARY KEY (`orderziid`)
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatDiaohuoorderzutable">
+CREATE TABLE `diaohuoorderzu` (
+  `orderzuid` int(11) NOT NULL AUTO_INCREMENT,
+  `time` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `productlocation` varchar(255) DEFAULT NULL,
+  `dayintime` varchar(255) DEFAULT NULL,
+  `dayinstatus` int(11) DEFAULT '1',
+  `zhaiyao` longtext,
+  `oldproductlocation` longtext,
+  `beizhu` varchar(255) DEFAULT ' ',
+  PRIMARY KEY (`orderzuid`)
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatEngineercontexttable">
+CREATE TABLE `engineercontext` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `engid` int(11) DEFAULT NULL COMMENT '工程类别id',
+  `title` varchar(255) DEFAULT NULL COMMENT '标题',
+  `jianjie` varchar(255) DEFAULT NULL COMMENT '简介',
+  `context` longtext COMMENT '内容',
+  `photopath` varchar(255) DEFAULT NULL COMMENT '图片路径',
+  `time` varchar(255) DEFAULT NULL,
+  `yueduliang` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatEngineeringtable">
+CREATE TABLE `engineering` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `classificationname` varchar(255) DEFAULT NULL COMMENT '工程案例类别名',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatFangweibiaoqiantable">
+CREATE TABLE `fangweibiaoqian` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fangweibiaoqianname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatFatherpurchasetable">
+CREATE TABLE `fatherpurchase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` varchar(255) DEFAULT NULL,
+  `productlocation` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `num` double(12,6) DEFAULT NULL,
+  `allprice` double(12,6) DEFAULT NULL,
+  `summary` longtext,
+  `firmname` varchar(255) DEFAULT NULL,
+  `beizhu` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatFeiyongtable">
+CREATE TABLE `feiyong` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` varchar(255) DEFAULT NULL,
+  `zhaiyao` varchar(255) DEFAULT NULL,
+  `kemubianma` varchar(255) DEFAULT NULL,
+  `kemuname` varchar(255) DEFAULT NULL,
+  `jine` double(12,2) DEFAULT NULL,
+  `paymethod` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `pingzhenghao` varchar(255) DEFAULT NULL,
+  `kemutype` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatFirmtable">
+CREATE TABLE `firm` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `firmname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatForphototabletable">
+CREATE TABLE `forphototable` (
+  `forid` int(11) DEFAULT NULL,
+  `forphoto` varchar(255) DEFAULT NULL,
+  `forphotostatus` int(11) DEFAULT '0',
+  `logo` int(11) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatGangweitable">CREATE TABLE `gangwei` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `zhiwei` varchar(255) DEFAULT NULL,
+  `huanjie` varchar(255) DEFAULT NULL,
+  `bilv` double(12,2) DEFAULT NULL,
+  `shengchantypename` varchar(255) DEFAULT NULL,
+  `bili` double(12,2) DEFAULT '0.00',
+  `gongshijine` double(12,4) DEFAULT '0.0000',
+  `tuochan` varchar(255) DEFAULT '否',
+  `gangweixianshu` int(11) DEFAULT '1',
+  `ispingfen` varchar(255) DEFAULT '否',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatGangweiguigejinetable">CREATE TABLE `gangweiguigejine` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `gangweiid` int(11) DEFAULT NULL,
+  `gangweiguige` varchar(255) DEFAULT NULL,
+  `jine` double(12,4) DEFAULT NULL,
+  `minjine` double(12,4) DEFAULT NULL,
+  `maxjine` double(12,4) DEFAULT NULL,
+  `centertext` int(11) DEFAULT NULL,
+  `allnumjisuan` varchar(255) DEFAULT NULL,
+  `huanjiename` varchar(255) DEFAULT NULL,
+  `yawen` varchar(255) DEFAULT NULL,
+  `shengchanhoudu` varchar(255) DEFAULT NULL,
+  `gongjianame` varchar(255) DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatGetmoneystyletable">CREATE TABLE `getmoneystyle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `stylename` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatGradetable">CREATE TABLE `grade` (
+  `dengjiid` int(11) NOT NULL AUTO_INCREMENT,
+  `dengjiname` varchar(255) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  PRIMARY KEY (`dengjiid`),
+  UNIQUE KEY `kk` (`dengjiname`,`logo`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatGuanlianlingliaotable">CREATE TABLE `guanlianlingliao` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `huanjieid` int(11) DEFAULT NULL,
+  `materialxinghao` varchar(255) DEFAULT NULL,
+  `materialname` varchar(255) DEFAULT NULL,
+  `bumen` varchar(255) DEFAULT NULL,
+  `shuliang` double DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatGuigeguanliantable">CREATE TABLE `guigeguanlian` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `typename` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `jicaiguige` varchar(255) DEFAULT NULL,
+  `yuanguige` varchar(255) DEFAULT NULL,
+  `shengchanhoudu` varchar(255) DEFAULT NULL,
+  `fenchengpianshu` varchar(255) DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatGuigezhongliangtable">CREATE TABLE `guigezhongliang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `guige` varchar(255) DEFAULT NULL,
+  `shengchanhoudu` varchar(255) DEFAULT '',
+  `zhongliang` double(12,2) DEFAULT NULL,
+  `guigezhongliangname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatHuanjiecipintable">CREATE TABLE `huanjiecipin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `huanjieid` int(11) DEFAULT NULL,
+  `cipinname` varchar(255) DEFAULT NULL,
+  `cipinsijisuan` varchar(255) DEFAULT '是',
+  `huanjiename` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatHuanjiematerialnameguanliantable">CREATE TABLE `huanjiematerialnameguanlian` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shengchanhuanjiename` varchar(255) DEFAULT NULL,
+  `shengchantypename` varchar(255) DEFAULT NULL,
+  `material` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `bumen` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatHuanjiematerialnameguanliantwotable">CREATE TABLE `huanjiematerialnameguanliantwo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `upid` varchar(255) DEFAULT NULL,
+  `num` double DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `shengchanhoudu` varchar(255) DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatHuanjietypematerialguanliantable">CREATE TABLE `huanjietypematerialguanlian` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shengchanhuanjiename` varchar(255) DEFAULT NULL,
+  `shengchantypename` varchar(255) DEFAULT NULL,
+  `material` varchar(255) DEFAULT NULL,
+  `materialxinghao` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `bumen` varchar(255) DEFAULT NULL,
+  `kcdizhi` varchar(255) DEFAULT NULL,
+  `pici` varchar(255) DEFAULT NULL,
+  `danweiname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatHuanjietypematerialguanliantwotable">CREATE TABLE `huanjietypematerialguanliantwo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `upid` varchar(255) DEFAULT NULL,
+  `num` double DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `shengchanhoudu` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatHuanjiexingguangongxutable">CREATE TABLE `huanjiexingguangongxu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `huanjieid` int(11) DEFAULT NULL,
+  `xingguangongxuname` varchar(255) DEFAULT NULL,
+  `xingguangongxusijisuan` varchar(255) DEFAULT '是',
+  `huanjiename` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatInvenmingxitable">CREATE TABLE `inven_mingxi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `invenid` int(11) DEFAULT NULL,
+  `zhihao` varchar(255) DEFAULT NULL,
+  `tiaoma` varchar(255) DEFAULT NULL,
+  `mishu` varchar(255) DEFAULT NULL,
+  `huowei` varchar(255) DEFAULT '空白',
+  `status` int(11) DEFAULT '1',
+  `timechuo` bigint(20) DEFAULT NULL,
+  `weight` double(11,2) DEFAULT '0.00',
+  `guige` varchar(255) DEFAULT NULL,
+  `zhihaobeizhu` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `iscaijian` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `shengchantime` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `timechuo` (`timechuo`)
+) ENGINE=InnoDB AUTO_INCREMENT=50762 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatJicaiguigetable">CREATE TABLE `jicaiguige` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `jicaiguigename` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatJichuguigetable">CREATE TABLE `jichuguige` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `guige` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+</select>
+<select id="creatKefutalkreporttable">CREATE TABLE `kefutalkreport` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `kehunameone` longtext,
+  `kehuphoneone` longtext,
+  `addressone` longtext,
+  `talkqkone` longtext,
+  `kehunametwo` longtext,
+  `kehuphonetwo` longtext,
+  `addresstwo` longtext,
+  `xinghaotwo` longtext,
+  `numtwo` longtext,
+  `jindutwo` longtext,
+  `xinghaothree` longtext,
+  `kehuphonethree` longtext,
+  `addressthree` longtext,
+  `kuaidithree` longtext,
+  `time` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatKemutable">
+CREATE TABLE `kemu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `kemutype` varchar(255) DEFAULT NULL,
+  `kemubianma` varchar(255) DEFAULT NULL,
+  `kemuname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatLeibietable">CREATE TABLE `leibie` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `leibiename` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatLianxiwomentable">CREATE TABLE `lianxiwomen` (
+  `photo` varchar(255) DEFAULT NULL,
+  `dizhi` varchar(255) DEFAULT NULL,
+  `dianhua` varchar(255) DEFAULT NULL,
+  `id` int(11) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatMaterialtable">CREATE TABLE `material` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `danweiname` varchar(255) DEFAULT NULL,
+  `materialname` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `xinghao` varchar(255) DEFAULT NULL,
+  `squarenum` double(255,5) DEFAULT '0.00000',
+  `squarenumstring` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `leiji` double(255,5) DEFAULT NULL,
+  `invenwarn` double(255,5) DEFAULT '0.00000',
+  `materialtype` varchar(255) DEFAULT NULL,
+  `materialdaima` varchar(255) DEFAULT NULL,
+  `caigoudanjia` double(255,5) DEFAULT '0.00000',
+  `hanshuidanjia` double(255,5) DEFAULT '0.00000',
+  `materialbeizhu` varchar(255) DEFAULT NULL,
+  `caigoujinezongji` double(255,5) DEFAULT '0.00000',
+  `hanshuijinezongji` double(255,5) DEFAULT '0.00000',
+  `kcdizhi` varchar(255) DEFAULT NULL,
+  `guanlianxinghao` longtext,
+  `guanlianid` varchar(255) DEFAULT NULL,
+  `pici` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatMaterialcaigoutable">CREATE TABLE `materialcaigou` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `materialname` varchar(255) DEFAULT NULL,
+  `danweiname` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `xinghao` varchar(255) DEFAULT NULL,
+  `squarenum` double DEFAULT NULL,
+  `materialtype` varchar(255) DEFAULT NULL,
+  `materialdaima` varchar(255) DEFAULT NULL,
+  `caigoudanjia` double DEFAULT NULL,
+  `hanshuidanjia` double DEFAULT NULL,
+  `kcdizhi` varchar(255) DEFAULT NULL,
+  `materialid` int(11) DEFAULT NULL,
+  `isshenhe` int(11) DEFAULT '1',
+  `shenhetime` varchar(255) DEFAULT NULL,
+  `pici` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatMaterialordertable">CREATE TABLE `materialorder` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `materialid` int(11) DEFAULT NULL COMMENT '原材料id',
+  `shuoming` varchar(255) DEFAULT NULL COMMENT '使用说明',
+  `squarenum` double DEFAULT NULL COMMENT '领取数量',
+  `squarenumstring` varchar(255) DEFAULT NULL COMMENT '明细',
+  `time` varchar(255) DEFAULT NULL COMMENT '领取时间',
+  `getmanname` varchar(255) DEFAULT NULL COMMENT '领取人',
+  `setmanname` varchar(255) DEFAULT NULL COMMENT '审核人',
+  `status` int(11) DEFAULT '1',
+  `bumen` varchar(255) DEFAULT NULL,
+  `materialorderbeizhu` varchar(255) DEFAULT NULL,
+  `caigoudanjia` double(12,2) DEFAULT '0.00',
+  `caigouzongjia` double(12,2) DEFAULT '0.00',
+  `hanshuidanjia` double(12,2) DEFAULT '0.00',
+  `hanshuizongjia` double(12,2) DEFAULT '0.00',
+  `ribaoid` int(11) DEFAULT NULL,
+  `pici` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatMidutable">CREATE TABLE `midu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `midu` varchar(255) DEFAULT ' ',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatMokuaitable">
+CREATE TABLE `mokuai` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mokuainame` varchar(255) DEFAULT NULL,
+  `peizhi` longtext,
+  `menuData` longtext,
+  `anniuData` longtext,
+  `showData` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatNavigatiotable">CREATE TABLE `navigation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `navicontext` longtext,
+  `naviname` varchar(255) DEFAULT NULL,
+  `naviphoto` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatPeifangtable">CREATE TABLE `peifang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `peifangname` varchar(255) DEFAULT NULL,
+  `xinghao` varchar(255) DEFAULT NULL,
+  `materialname` varchar(255) DEFAULT NULL,
+  `num` double DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `bili` double(12,2) DEFAULT NULL,
+  `ispeifangmatchtype` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatPointtabletable">CREATE TABLE `pointtable` (
+  `point` int(11) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatProductcztable">CREATE TABLE `product_cz` (
+  `czid` int(11) NOT NULL AUTO_INCREMENT COMMENT '材质的id',
+  `czname` varchar(255) NOT NULL COMMENT '材质的名称',
+  `logo` int(11) DEFAULT '1',
+  PRIMARY KEY (`czid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='同质透心产品的材质表'
+
+</select>
+<select id="creatProductinformationtable">CREATE TABLE `product_information` (
+  `productinid` int(11) NOT NULL AUTO_INCREMENT COMMENT '产品信息id',
+  `productphoto` varchar(255) DEFAULT NULL COMMENT '产品规格id',
+  `productnum` varchar(255) NOT NULL DEFAULT '' COMMENT '产品编号',
+  `productseriesid` int(11) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  `gongyou` varchar(255) DEFAULT NULL,
+  `weight` double DEFAULT '0',
+  `xianhuoandfucai` int(11) DEFAULT '1',
+  `invenbaojing` double(12,2) DEFAULT '500.00',
+  `youwubianhao` int(11) DEFAULT '1',
+  `yincang` int(11) DEFAULT '1',
+  PRIMARY KEY (`productinid`,`productnum`),
+  UNIQUE KEY `productnum` (`productnum`),
+  UNIQUE KEY `lianhe` (`productnum`,`productseriesid`),
+  UNIQUE KEY `bky` (`productphoto`,`productnum`,`productseriesid`),
+  KEY `id` (`productinid`),
+  KEY `serieskey` (`productseriesid`),
+  CONSTRAINT `serieskey` FOREIGN KEY (`productseriesid`) REFERENCES `series` (`seriesid`)
+) ENGINE=InnoDB AUTO_INCREMENT=460 DEFAULT CHARSET=utf8 COMMENT='产品的信息表'
+
+</select>
+<select id="creatProductinventable">CREATE TABLE `product_inven` (
+  `kcid` int(11) NOT NULL AUTO_INCREMENT COMMENT '库存id',
+  `productinid` int(11) NOT NULL COMMENT '产品信息id',
+  `squarenum` double(255,2) NOT NULL COMMENT '产品库存量，用平米计算',
+  `pici` varchar(255) NOT NULL COMMENT '产品的批次',
+  `squarenumstring` varchar(255) NOT NULL COMMENT '库存量，线下的方式表示',
+  `productlocation` varchar(255) NOT NULL DEFAULT '北京' COMMENT '仓储地',
+  `kucunbeizhu` longtext,
+  `logo` int(11) DEFAULT '1',
+  `kuwei` varchar(255) DEFAULT '空白',
+  `gongyou` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `allsquare` double(12,2) DEFAULT NULL,
+  `chengbenjia` double(12,2) DEFAULT NULL,
+  `pianshu` int(11) DEFAULT '0',
+  `allcatse` varchar(255) DEFAULT ' ',
+  `weight` double(255,9) DEFAULT '0.000000000',
+  `juanshu` int(11) DEFAULT '0',
+  `newsquarenum` varchar(255) DEFAULT NULL,
+  `mingxidanwei` varchar(255) DEFAULT '平米',
+  `guige` varchar(255) DEFAULT NULL,
+  `productname` varchar(255) DEFAULT NULL,
+  `shengchantime` varchar(255) DEFAULT NULL,
+  `allweight` double(24,2) DEFAULT '0.00',
+  `kehuname` longtext,
+  `tuojian` int(11) DEFAULT '0',
+  `banci` varchar(255) DEFAULT NULL,
+  `biaozhunjian` double DEFAULT '0',
+  `guigecolor` int(11) DEFAULT '0',
+  `beizhucolor` int(11) DEFAULT '0',
+  `liuhuoinfo` longtext,
+  `isbaobiaoupload` int(11) DEFAULT '1',
+  `changyong` int(11) DEFAULT '1',
+  `kehuxinghao` varchar(255) DEFAULT NULL,
+  `jiancheng` varchar(255) DEFAULT NULL,
+  `yonghukucunbeizhu` longtext,
+  PRIMARY KEY (`kcid`),
+  KEY `xinxi` (`productinid`),
+  CONSTRAINT `xinxi` FOREIGN KEY (`productinid`) REFERENCES `product_information` (`productinid`)
+) ENGINE=InnoDB AUTO_INCREMENT=25699331 DEFAULT CHARSET=utf8 COMMENT='产品的库存表\r\n存储信息的流程：\r\n类型：确定-》总厚度-》耐磨层厚度：确定-》编号：确定-》库存'
+
+</select>
+<select id="creatProductneworderspetable">CREATE TABLE `product_neworderspe` (
+  `neworderggid` int(11) NOT NULL AUTO_INCREMENT COMMENT '定制产品规格低',
+  `productordertypeid` int(11) DEFAULT NULL COMMENT '定制产品类型',
+  `orderthick` double(11,2) DEFAULT NULL COMMENT '定制总厚度',
+  `ordernmcthick` double(11,2) DEFAULT NULL COMMENT '定制耐磨层',
+  `orderbackcheck` int(11) DEFAULT NULL COMMENT '背底选择',
+  `orderczcheckid` int(11) DEFAULT NULL COMMENT '定制材质',
+  `orderwenluid` int(11) DEFAULT NULL COMMENT '定制纹路',
+  `orderggprice` double(11,2) DEFAULT NULL COMMENT '定制规格的参考价格',
+  `status` int(11) DEFAULT '1',
+  `jicai` varchar(255) DEFAULT NULL,
+  `whatmian` varchar(255) DEFAULT NULL,
+  `fengzhou` varchar(255) DEFAULT NULL,
+  `guangdu` varchar(255) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  PRIMARY KEY (`neworderggid`),
+  KEY `typekey` (`productordertypeid`),
+  KEY `wenluorderkey` (`orderwenluid`),
+  KEY `caizhiorderkey` (`orderczcheckid`),
+  KEY `jihoufengguangmian` (`orderthick`,`jicai`,`whatmian`,`fengzhou`,`guangdu`),
+  KEY `jihoumian` (`orderthick`,`jicai`,`whatmian`),
+  KEY `jihounmcmian` (`orderthick`,`ordernmcthick`,`jicai`,`whatmian`),
+  CONSTRAINT `caizhiorderkey` FOREIGN KEY (`orderczcheckid`) REFERENCES `product_cz` (`czid`),
+  CONSTRAINT `typekey` FOREIGN KEY (`productordertypeid`) REFERENCES `product_type` (`lxid`),
+  CONSTRAINT `wenluorderkey` FOREIGN KEY (`orderwenluid`) REFERENCES `product_wenlu` (`wlid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatProductpricetable">CREATE TABLE `product_price` (
+  `pricesid` int(11) NOT NULL AUTO_INCREMENT,
+  `productseriesid` int(11) DEFAULT NULL,
+  `gradeid` int(11) DEFAULT NULL,
+  `price` double(11,2) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  `meijianprice` double(11,2) DEFAULT '0.00',
+  `meidunprice` double(11,2) DEFAULT '0.00',
+  `meimiprice` double(11,2) DEFAULT '0.00',
+  PRIMARY KEY (`pricesid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1255 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatProductspecificationtable">CREATE TABLE `product_specification` (
+  `ggid` int(11) NOT NULL AUTO_INCREMENT COMMENT '产品的信息',
+  `producttypeid` int(11) DEFAULT NULL COMMENT '产品的类型',
+  `thick` float(11,2) DEFAULT NULL COMMENT '产品的厚度',
+  `nmcthick` float(11,2) DEFAULT NULL COMMENT '产品的耐磨层厚度',
+  `czcheckid` int(11) DEFAULT NULL COMMENT '材质选择表的外键',
+  `wenluid` int(11) DEFAULT NULL COMMENT '纹路表的id外键',
+  `logo` int(11) DEFAULT '1',
+  PRIMARY KEY (`ggid`),
+  KEY `wenlu` (`wenluid`),
+  KEY `leixing` (`producttypeid`),
+  KEY `caizhi` (`czcheckid`),
+  CONSTRAINT `caizhi` FOREIGN KEY (`czcheckid`) REFERENCES `product_cz` (`czid`),
+  CONSTRAINT `leixing` FOREIGN KEY (`producttypeid`) REFERENCES `product_type` (`lxid`),
+  CONSTRAINT `wenlu` FOREIGN KEY (`wenluid`) REFERENCES `product_wenlu` (`wlid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品的规格表'
+
+</select>
+<select id="creatProducttypetable">CREATE TABLE `product_type` (
+  `lxid` int(11) NOT NULL COMMENT '产品的类型id',
+  `name` varchar(25) NOT NULL COMMENT '产品的类型名称',
+  `logo` int(11) DEFAULT '1',
+  PRIMARY KEY (`lxid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品的类型表'
+
+</select>
+<select id="creatProductwenlutable">CREATE TABLE `product_wenlu` (
+  `wlid` int(11) NOT NULL AUTO_INCREMENT COMMENT '纹路的id',
+  `wlname` varchar(255) DEFAULT NULL COMMENT '纹路的名称',
+  `logo` int(11) DEFAULT '1',
+  PRIMARY KEY (`wlid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='运动产品的纹路'
+
+</select>
+<select id="creatProductnumphototable">CREATE TABLE `productnum_photo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `productnumid` int(11) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT NULL,
+  `photobeizhu` longtext,
+  `logo` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatProductnummaterialtable">CREATE TABLE `productnummaterial` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `productnum` varchar(255) DEFAULT NULL,
+  `materialxinghao` varchar(255) DEFAULT NULL,
+  `num` double(12,2) DEFAULT NULL,
+  `material` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatProductnummaterialguanliantable">CREATE TABLE `productnummaterialguanlian` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `productnum` varchar(255) DEFAULT NULL,
+  `material` varchar(255) DEFAULT NULL,
+  `materialxinghao` varchar(255) DEFAULT NULL,
+  `num` double DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `bumen` varchar(255) DEFAULT NULL,
+  `huanjiename` varchar(255) DEFAULT NULL,
+  `kcdizhi` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatProductnummaterialguanlianonetable">CREATE TABLE `productnummaterialguanlianone` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `num` double DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `bumen` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatProductnummaterialguanliantwotable">CREATE TABLE `productnummaterialguanliantwo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `upid` varchar(255) DEFAULT NULL,
+  `num` double DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatProductnummaterialtwotable">CREATE TABLE `productnummaterialtwo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `upid` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `num` double(12,6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatProjectpreparationtable">CREATE TABLE `projectpreparation` (
+  `preparationid` int(11) NOT NULL AUTO_INCREMENT,
+  `projectname` varchar(255) DEFAULT NULL,
+  `projectaddress` varchar(255) DEFAULT NULL,
+  `projectschedule` varchar(255) DEFAULT NULL,
+  `projectsquare` double(22,10) DEFAULT NULL,
+  `projectseries` varchar(255) DEFAULT NULL,
+  `successrate` varchar(255) DEFAULT NULL,
+  `begintime` varchar(255) DEFAULT NULL,
+  `endtime` varchar(255) DEFAULT NULL,
+  `describe` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
+  `starttime` varchar(255) DEFAULT NULL,
+  `jxsid` int(11) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  PRIMARY KEY (`preparationid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatQitagongxutable">CREATE TABLE `qitagongxu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `huanjieid` int(11) DEFAULT NULL,
+  `gongxuname` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `meijianjine` double(12,3) DEFAULT '0.000',
+  `fenchengpianshu` int(11) DEFAULT '0',
+  `meipianjine` double(12,3) DEFAULT '0.000',
+  `isjisuanrenshu` varchar(255) DEFAULT '否',
+  `huanjiename` varchar(255) DEFAULT NULL,
+  `isleijihuanjie` varchar(255) DEFAULT '否',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatRibaobiaonametable">CREATE TABLE `ribaobiaoname` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `zhiwei` varchar(255) DEFAULT NULL,
+  `bili` double(12,2) DEFAULT '0.00',
+  `banci` varchar(255) DEFAULT NULL,
+  `zhicheng` varchar(255) DEFAULT '员工',
+  `xianshu` int(11) DEFAULT '1',
+  `gerenbili` double(12,2) DEFAULT '1.00',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatRizhitable">CREATE TABLE `rizhi` (
+  `rizhiid` int(11) NOT NULL AUTO_INCREMENT,
+  `rizhitype` int(11) DEFAULT NULL,
+  `rizhitime` varchar(255) DEFAULT NULL,
+  `rizhicontext` longtext,
+  `rizhiuser` varchar(255) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  `status` int(11) DEFAULT '1',
+  PRIMARY KEY (`rizhiid`)
+) ENGINE=InnoDB AUTO_INCREMENT=6469 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatRukuleijitable">CREATE TABLE `rukuleiji` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `seriesname` varchar(255) DEFAULT NULL,
+  `seriesnum` varchar(255) DEFAULT NULL,
+  `productnum` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `shengchantime` varchar(255) DEFAULT NULL,
+  `juanshu` int(255) DEFAULT NULL,
+  `mishu` double(255,2) DEFAULT NULL,
+  `allweight` double(255,2) DEFAULT NULL,
+  `pingmi` double(255,2) DEFAULT NULL,
+  `xiliedanwei` varchar(255) DEFAULT NULL,
+  `pianshu` int(11) DEFAULT NULL,
+  `productseriesid` int(11) DEFAULT NULL,
+  `productname` varchar(255) DEFAULT NULL,
+  `kcid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=896 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatSalestable">CREATE TABLE `sales` (
+  `salesid` int(11) NOT NULL AUTO_INCREMENT,
+  `saleszuid` int(11) DEFAULT NULL,
+  `productnum` varchar(255) DEFAULT NULL,
+  `square` double(255,2) DEFAULT NULL,
+  `squarenum` varchar(255) DEFAULT NULL,
+  `salestime` varchar(255) DEFAULT NULL,
+  `userid` int(11) DEFAULT NULL,
+  `accountmanagerid` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
+  `pici` varchar(255) DEFAULT NULL,
+  `productlocation` varchar(255) DEFAULT NULL,
+  `money` double(255,2) DEFAULT NULL,
+  `salesstatus` int(11) DEFAULT '1',
+  `logo` int(11) DEFAULT '1',
+  `juanshu` int(11) DEFAULT '0',
+  `zhihaoid` varchar(255) DEFAULT NULL,
+  `zhihaoinfo` varchar(255) DEFAULT NULL,
+  `xxid` int(11) DEFAULT NULL,
+  `unitprice` double(12,2) DEFAULT '0.00',
+  `beizhu` longtext,
+  `danwei` varchar(255) DEFAULT '/平米',
+  PRIMARY KEY (`salesid`)
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatSaleszutable">CREATE TABLE `saleszu` (
+  `saleszuid` int(11) NOT NULL AUTO_INCREMENT,
+  `allprice` double(12,6) DEFAULT NULL,
+  `allsquare` double(12,6) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
+  `logo` int(11) DEFAULT '1',
+  `saleszuzhihaoinfo` varchar(255) DEFAULT NULL,
+  `gysname` varchar(255) DEFAULT ' ',
+  `beizhu` longtext,
+  PRIMARY KEY (`saleszuid`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatSeriestable">CREATE TABLE `series` (
+  `seriesid` int(11) NOT NULL AUTO_INCREMENT,
+  `seriesname` varchar(255) DEFAULT NULL,
+  `seriesnum` varchar(255) DEFAULT NULL,
+  `seriesphoto` varchar(255) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  `paixu` int(11) DEFAULT '100000',
+  `pinpaipaixu` int(11) DEFAULT '100000',
+  `guige` varchar(255) DEFAULT ' ',
+  `productname` varchar(255) DEFAULT NULL,
+  `description` longtext,
+  `youwubianhao` int(11) DEFAULT '1',
+  `xiliedanwei` varchar(255) DEFAULT NULL,
+  `yincang` int(11) DEFAULT '1',
+  `mingxidanwei` varchar(255) DEFAULT '',
+  PRIMARY KEY (`seriesid`),
+  UNIQUE KEY `seriesnum` (`seriesnum`)
+) ENGINE=InnoDB AUTO_INCREMENT=1036 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShengchanhoudutable">CREATE TABLE `shengchanhoudu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `houdu` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShengchanhuanjietable">CREATE TABLE `shengchanhuanjie` (
+  `shengchanhuanjieid` int(11) NOT NULL AUTO_INCREMENT,
+  `shengchantypeid` int(11) DEFAULT NULL,
+  `shengchanhuanjiepaixu` int(11) DEFAULT NULL,
+  `shengchanhuanjiename` varchar(255) DEFAULT NULL,
+  `shengchanhuanjieguige` int(11) DEFAULT '1',
+  `shengchanhuanjiedanwei` varchar(255) DEFAULT NULL,
+  `isguanliankucun` varchar(255) DEFAULT '否',
+  `isxianshishengchanjindu` varchar(255) DEFAULT '是',
+  PRIMARY KEY (`shengchanhuanjieid`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShengchanorderzitable">CREATE TABLE `shengchanorderzi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `zuid` int(11) DEFAULT NULL,
+  `kehuname` varchar(255) DEFAULT ' ',
+  `zhizaohaoma` int(11) DEFAULT NULL,
+  `xiangci` int(11) DEFAULT NULL,
+  `houdu` double(12,6) DEFAULT NULL,
+  `kuandu` double(12,6) DEFAULT NULL,
+  `nmchoudu` double(12,6) DEFAULT NULL,
+  `juanzhuang` double(12,6) DEFAULT NULL,
+  `yawen` varchar(255) DEFAULT ' ',
+  `bianhao` varchar(255) DEFAULT ' ',
+  `mishu` varchar(255) DEFAULT NULL,
+  `zhishu` int(11) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `uv` varchar(11) DEFAULT ' ',
+  `biaoqian` varchar(255) DEFAULT ' ',
+  `beiyin` varchar(255) DEFAULT ' ',
+  `yanse` varchar(255) DEFAULT ' ',
+  `status` int(11) DEFAULT '1',
+  `time` varchar(255) DEFAULT NULL,
+  `ckhou` varchar(255) DEFAULT ' ',
+  `suokoutype` varchar(255) DEFAULT ' ',
+  `caimonum` double(12,6) DEFAULT '0.000000',
+  `jiaohuotime` varchar(255) DEFAULT ' ',
+  `xiadanren` varchar(255) DEFAULT ' ',
+  `yujitime` varchar(255) DEFAULT ' ',
+  `yuanyin` varchar(255) DEFAULT ' ',
+  `shangchuanxinxi` varchar(255) DEFAULT ' ',
+  `yuancailiaobeizhu` varchar(255) DEFAULT '  ',
+  `kehuphone` varchar(255) DEFAULT ' ',
+  `prefixstatus` varchar(255) DEFAULT NULL,
+  `suffixstatus` varchar(255) DEFAULT NULL,
+  `nowstatus` varchar(255) DEFAULT NULL,
+  `biaomianguangzedu` varchar(255) DEFAULT ' ',
+  `jicaiguigename` varchar(255) DEFAULT NULL,
+  `daojiaoname` varchar(255) DEFAULT ' ',
+  `zhongdiliaoname` varchar(255) DEFAULT NULL,
+  `leibiename` varchar(255) DEFAULT NULL,
+  `kehuxinghao` varchar(255) DEFAULT NULL,
+  `baozhuangfangshi` varchar(255) DEFAULT NULL,
+  `midu` varchar(255) DEFAULT NULL,
+  `shengchanorderzibeizhu` varchar(255) DEFAULT NULL,
+  `pianmeihe` int(11) DEFAULT NULL,
+  `hemeituo` int(11) DEFAULT NULL,
+  `yishangchuannum` double DEFAULT '0',
+  `xiadanstatus` int(11) DEFAULT '1',
+  `headphoto` longtext,
+  `shengchanhoudu` varchar(255) DEFAULT NULL,
+  `shengchanhuanjiedanwei` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShengchanorderzutable">CREATE TABLE `shengchanorderzu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `kehuname` varchar(255) DEFAULT NULL,
+  `kehuphone` varchar(255) DEFAULT NULL,
+  `allmishu` double(12,6) DEFAULT NULL,
+  `allzhishu` int(11) DEFAULT NULL,
+  `beizhu` varchar(255) DEFAULT NULL,
+  `zhizaohaoma` int(11) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `headphoto` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShengchanribaotable">CREATE TABLE `shengchanribao` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `type` varchar(255) DEFAULT ' ' COMMENT '类型（木塑，石塑）',
+  `huanjie` varchar(255) DEFAULT ' ' COMMENT '生产环节',
+  `xinghao` varchar(255) DEFAULT ' ' COMMENT '型号',
+  `banci` varchar(255) DEFAULT ' ' COMMENT '班次',
+  `pici` varchar(255) DEFAULT ' ' COMMENT '批次',
+  `guige` varchar(255) DEFAULT '0*0' COMMENT '规格',
+  `beizhu` varchar(255) DEFAULT ' ' COMMENT '备注',
+  `yawen` varchar(255) DEFAULT ' ' COMMENT '压纹',
+  `jichuzongnum` double(12,6) DEFAULT '0.000000' COMMENT '挤出总产量',
+  `chengpinnum` varchar(255) DEFAULT '0.000000' COMMENT '成品数量',
+  `pvcfivexing` varchar(255) DEFAULT ' ' COMMENT 'pvc5型',
+  `zhonggaifour` varchar(255) DEFAULT ' ' COMMENT '重钙400目',
+  `qinggai` varchar(255) DEFAULT ' ' COMMENT '轻钙',
+  `zhuji` varchar(255) DEFAULT ' ' COMMENT '助剂',
+  `feiliao` varchar(255) DEFAULT ' ' COMMENT '生产废料',
+  `yinshuamo` varchar(255) DEFAULT ' ' COMMENT '印刷膜',
+  `pvceightxing` varchar(255) DEFAULT ' ' COMMENT 'pvc8型',
+  `zhonggaieight` varchar(255) DEFAULT ' ' COMMENT '重钙800目',
+  `cipinnum` double(12,6) DEFAULT '0.000000' COMMENT '次品数量',
+  `huihuouv` varchar(255) DEFAULT ' ' COMMENT '回火或者uv',
+  `getmaterialnum` varchar(255) DEFAULT ' ' COMMENT '领料数量',
+  `miancengmaterial` varchar(255) DEFAULT ' ' COMMENT '面层材料',
+  `miancengxinghao` varchar(255) DEFAULT ' ' COMMENT '面层型号',
+  `miancengmaterialpici` varchar(255) DEFAULT ' ' COMMENT '面层材料批次',
+  `jicaiguige` varchar(255) DEFAULT '0*0' COMMENT '基材规格',
+  `miancengguige` varchar(255) DEFAULT '0*0' COMMENT '面层规格',
+  `getmiancengnum` varchar(255) DEFAULT ' ' COMMENT '领用面层数量',
+  `getjicainum` varchar(255) DEFAULT ' ' COMMENT '领用基材数量',
+  `cipinmianceng` varchar(255) DEFAULT ' ' COMMENT '次品面层',
+  `cipinmiancengyuanyin` varchar(255) DEFAULT ' ' COMMENT '次品面层不良原因',
+  `cipinjicai` varchar(255) DEFAULT ' ' COMMENT '次品基材',
+  `cipinjicaiyuanyin` varchar(255) DEFAULT ' ' COMMENT '次品基材原因',
+  `kaicaoguige` varchar(255) DEFAULT '0*0' COMMENT '开槽规格',
+  `fenqiechengpinnum` varchar(255) DEFAULT ' ' COMMENT '分切成品数量',
+  `fenqiecipinnum` varchar(255) DEFAULT ' ' COMMENT '分切次品数量',
+  `kaicaochengpinnum` varchar(255) DEFAULT ' ' COMMENT '开槽成品数',
+  `kaicaocipinnum` varchar(255) DEFAULT ' ' COMMENT '开槽次品数',
+  `getjingyindiannum` varchar(255) DEFAULT ' ' COMMENT '领用静音垫数量',
+  `chengpinbaozhuangguige` varchar(255) DEFAULT ' ' COMMENT '成品包装规格',
+  `status` int(11) DEFAULT '1' COMMENT '状态',
+  `time` varchar(255) DEFAULT ' ' COMMENT '生成时间',
+  `username` varchar(255) DEFAULT ' ' COMMENT '用户名',
+  `lilunnum` varchar(255) DEFAULT ' ' COMMENT '理论数量',
+  `nmc` varchar(255) DEFAULT ' ' COMMENT '耐磨层',
+  `huiliao` varchar(255) DEFAULT ' ' COMMENT '回料',
+  `midu` varchar(255) DEFAULT ' ',
+  `shengyunum` varchar(255) DEFAULT ' ',
+  `name` varchar(255) DEFAULT NULL,
+  `cipinyuanyin` varchar(255) DEFAULT NULL,
+  `aokang` double(12,2) DEFAULT '0.00',
+  `taose` double(12,2) DEFAULT '0.00',
+  `qipao` double(12,2) DEFAULT '0.00',
+  `zazhi` double(12,2) DEFAULT '0.00',
+  `chongpian` double(12,2) DEFAULT '0.00',
+  `zhehen` double(12,2) DEFAULT '0.00',
+  `linmo` double(12,2) DEFAULT '0.00',
+  `jingdian` double(12,2) DEFAULT '0.00',
+  `guahen` double(12,2) DEFAULT '0.00',
+  `dong` double(12,2) DEFAULT '0.00',
+  `huai` double(12,2) DEFAULT '0.00',
+  `secha` double(12,2) DEFAULT '0.00',
+  `qita` double(12,2) DEFAULT '0.00',
+  `tuoceng` double(12,2) DEFAULT '0.00',
+  `kehuphone` varchar(255) DEFAULT NULL,
+  `zhongdiliaoname` varchar(255) DEFAULT NULL,
+  `yansename` varchar(255) DEFAULT NULL,
+  `upshengchanribaoid` int(11) DEFAULT '0',
+  `mishu` varchar(255) DEFAULT NULL,
+  `kehuxinghao` varchar(255) DEFAULT NULL,
+  `chanliangyejiheji` varchar(255) DEFAULT NULL,
+  `cipinyejiheji` varchar(255) DEFAULT NULL,
+  `qitagongxuyejiheji` varchar(255) DEFAULT NULL,
+  `beizhuinfo` varchar(255) DEFAULT NULL,
+  `butiejine` double(12,2) DEFAULT NULL,
+  `shenhe` int(11) DEFAULT '1',
+  `baocunnametext` varchar(255) DEFAULT ' ',
+  `xingguangongxu` varchar(255) DEFAULT ' ',
+  `xingguangongxuyejiheji` varchar(255) DEFAULT ' ',
+  `cipinyuanyincontent` longtext,
+  `qitagongxucontent` longtext,
+  `xingguangongxucontent` longtext,
+  `pingfenname` longtext,
+  `pingfenjine` double(12,4) DEFAULT '0.0000',
+  `pingfen` int(11) DEFAULT '1',
+  `jisuancishu` int(11) DEFAULT '0',
+  `jisuanrenname` longtext,
+  `ribaokcid` int(11) DEFAULT NULL,
+  `pianmeihe` double DEFAULT NULL,
+  `isjiaban` varchar(255) DEFAULT NULL,
+  `cailiao` varchar(255) DEFAULT NULL,
+  `peifang` varchar(255) DEFAULT NULL,
+  `shengchanhuanjiedanwei` varchar(255) DEFAULT NULL,
+  `shengchanhoudu` varchar(255) DEFAULT NULL,
+  `gongjianame` varchar(255) DEFAULT '',
+  `getmaterialname` varchar(255) DEFAULT NULL,
+  `getmaterialpici` varchar(255) DEFAULT NULL,
+  `getmaterialxinghao` varchar(255) DEFAULT NULL,
+  `getmaterialdanweiname` varchar(255) DEFAULT NULL,
+  `xinghaomaterialpici` varchar(255) DEFAULT NULL,
+  `xinghaodanweiname` varchar(255) DEFAULT NULL,
+  `xinghaoxinghao` varchar(255) DEFAULT NULL,
+  `xinghaomaterialname` varchar(255) DEFAULT NULL,
+  `peifangmaterialpici` varchar(255) DEFAULT NULL,
+  `peifangdanweiname` varchar(255) DEFAULT NULL,
+  `peifangxinghao` varchar(255) DEFAULT NULL,
+  `peifangmaterialname` varchar(255) DEFAULT NULL,
+  `ispeifangmatchtype` varchar(255) DEFAULT '',
+  `materialnamematerialname` varchar(255) DEFAULT NULL,
+  `materialnamexinghao` varchar(255) DEFAULT NULL,
+  `materialnamedanweiname` varchar(255) DEFAULT NULL,
+  `materialnamematerialpici` varchar(255) DEFAULT NULL,
+  `hegelv` double(12,2) DEFAULT '1.00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShengchantypetable">CREATE TABLE `shengchantype` (
+  `shengchantypeid` int(11) NOT NULL AUTO_INCREMENT,
+  `shengchantypename` varchar(255) DEFAULT NULL,
+  `peizhi` longtext,
+  PRIMARY KEY (`shengchantypeid`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShengchanyejitable">CREATE TABLE `shengchanyeji` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `zhiwei` varchar(255) DEFAULT NULL,
+  `yeji` double(24,2) DEFAULT NULL,
+  `ribaoid` int(11) DEFAULT NULL,
+  `huanjie` varchar(255) DEFAULT NULL,
+  `count` int(11) DEFAULT '1',
+  `yuanyin` longtext,
+  `bumen` varchar(255) DEFAULT NULL,
+  `caimoxinghao` varchar(255) DEFAULT NULL,
+  `shenhe` int(11) DEFAULT '1',
+  `banci` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShengchanzhuangtaitable">CREATE TABLE `shengchanzhuangtai` (
+  `shengchanzhuangtaiid` int(11) NOT NULL AUTO_INCREMENT,
+  `shengchanhuanjieid` int(11) DEFAULT NULL,
+  `shengchanzhuangtainame` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`shengchanzhuangtaiid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShichangdiaochareporttable">CREATE TABLE `shichangdiaochareport` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `quyu` varchar(255) DEFAULT NULL,
+  `series` varchar(255) DEFAULT NULL,
+  `firm` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `firmjianjie` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `goodproduct` varchar(255) DEFAULT NULL,
+  `zhanyoulv` varchar(255) DEFAULT NULL,
+  `zhimingdu` varchar(255) DEFAULT NULL,
+  `localseries` varchar(255) DEFAULT NULL,
+  `quanguoseries` varchar(255) DEFAULT NULL,
+  `xiaoshoue` varchar(255) DEFAULT NULL,
+  `youshi` varchar(255) DEFAULT NULL,
+  `lieshi` varchar(255) DEFAULT NULL,
+  `pinggu` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatShopcarttable">CREATE TABLE `shopcart` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT NULL,
+  `productnum` varchar(255) DEFAULT NULL COMMENT '产品编号',
+  `squarenum` double DEFAULT NULL COMMENT '发货数量',
+  `xianhuoandfucai` int(11) DEFAULT '1' COMMENT '现货还是辅材',
+  `guige` varchar(255) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT NULL,
+  `seriesname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatShouhoureporttable">
+CREATE TABLE `shouhoureport` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `kehuname` longtext,
+  `kehuphone` longtext,
+  `address` longtext,
+  `num` longtext,
+  `beizhu` longtext,
+  `productnum` longtext,
+  `status` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+
+</select>
+<select id="creatSonpurchasetable">CREATE TABLE `sonpurchase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fatherpurchaseid` int(11) DEFAULT NULL,
+  `productnum` varchar(255) DEFAULT NULL,
+  `productlocation` varchar(255) DEFAULT NULL,
+  `sonnum` varchar(255) DEFAULT NULL,
+  `sonprice` double(24,2) DEFAULT NULL,
+  `pici` varchar(255) DEFAULT NULL,
+  `squarestring` varchar(255) DEFAULT NULL,
+  `purchaseprice` double(24,2) DEFAULT NULL,
+  `kuwei` varchar(255) DEFAULT NULL,
+  `kcid` int(11) DEFAULT NULL,
+  `timechuo` bigint(20) DEFAULT NULL,
+  `firmname` varchar(255) DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `mingxidanwei` varchar(255) DEFAULT '米',
+  `piancai` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8
+
+
+
+</select>
+<select id="creatSuokoutypetable">CREATE TABLE `suokoutype` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `suokoutypename` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatTardyzutable">CREATE TABLE `tardyzu` (
+  `tardyzuid` int(11) NOT NULL AUTO_INCREMENT,
+  `allprice` double(12,6) DEFAULT '0.000000',
+  `realallprice` double(12,6) DEFAULT '0.000000',
+  `paytime` varchar(255) DEFAULT NULL,
+  `getmoneystary` varchar(255) DEFAULT NULL,
+  `jxsid` int(11) DEFAULT NULL,
+  `tardyzustatus` int(11) DEFAULT '12',
+  `logo` int(11) DEFAULT '1',
+  `ddids` longtext,
+  PRIMARY KEY (`tardyzuid`)
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatTypetable">CREATE TABLE `type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `typename` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatTypematerialtable">CREATE TABLE `typematerial` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shengchantype` varchar(255) DEFAULT NULL,
+  `materialxinghao` varchar(255) DEFAULT NULL,
+  `num` double(12,2) DEFAULT NULL,
+  `material` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatTypematerialtwotable">CREATE TABLE `typematerialtwo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `upid` varchar(255) DEFAULT NULL,
+  `guige` varchar(255) DEFAULT NULL,
+  `num` double(12,6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatUvtable">CREATE TABLE `uv` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uvname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatWhtabletable">CREATE TABLE `whtable` (
+  `whtableid` int(11) NOT NULL AUTO_INCREMENT,
+  `orderwidth` double(11,2) DEFAULT NULL,
+  `orderheight` double(11,2) DEFAULT NULL,
+  `newordertypeid` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
+  `jicai` varchar(255) DEFAULT NULL,
+  `logo` int(11) DEFAULT '1',
+  PRIMARY KEY (`whtableid`),
+  UNIQUE KEY `hhhda` (`orderwidth`,`orderheight`,`newordertypeid`,`jicai`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatXinghaotable">CREATE TABLE `xinghao` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `houdu` double(12,6) DEFAULT NULL,
+  `kuandu` double(12,6) DEFAULT NULL,
+  `nmchoudu` double(12,6) DEFAULT NULL,
+  `ckhou` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatYangbenreporttable">CREATE TABLE `yangbenreport` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `kehuname` longtext,
+  `kehuphone` longtext,
+  `address` longtext,
+  `squarestring` longtext,
+  `beizhu` longtext,
+  `status` int(11) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatYansetable">CREATE TABLE `yanse` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `yansename` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatYawentable">CREATE TABLE `yawen` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `yawenname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+<select id="creatZhongdiliaotable">CREATE TABLE `zhongdiliao` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `zhongdiliaoname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

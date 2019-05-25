@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsdz.jsdzcloud.dao.ProductMapper">
+	<resultMap id="ProductInformationMapper" type="com.jsdz.jsdzcloud.bean.ProductInformation">
+		<id column="productinid" property="productinid" jdbcType="INTEGER" />
+		<result column="productnum" property="productnum"
+			jdbcType="VARCHAR" />
+		<result column="productphoto" property="productphoto" />
+		<!-- <association column="productstid" property="productspecification" 
+			resultMap="productguigeMap"></association> -->
+		<result column="gongyou" property="gongyou" />
+		<result column="weight" property="weight" />
+		<result column="xianhuoandfucai" property="xianhuoandfucai" />
+		<result column="invenbaojing" property="invenbaojing" />
+		<result column="yincang" property="yincang" />
+		<association property="series" resultMap="SeriesMap"></association>
+	</resultMap>
+	<resultMap type="com.jsdz.jsdzcloud.bean.Series" id="SeriesMap">
+		<id column="seriesid" property="seriesid" jdbcType="INTEGER" />
+		<result column="seriesname" property="seriesname"
+			jdbcType="VARCHAR" />
+		<result column="seriesnum" property="seriesnum"
+			jdbcType="VARCHAR" />
+		<result column="seriesphoto" property="seriesphoto" />
+		<result column="paixu" property="paixu" />
+		<result column="guige" property="guige" />
+		<result column="description" property="description" />
+		<result column="productname" property="productname" />
+		<result column="youwubianhao" property="youwubianhao" />
+		<result column="xiliedanwei" property="xiliedanwei" />
+		<result column="price" property="price" />
+		<result column="meimiprice" property="meimiprice" />
+		<result column="meijianprice" property="meijianprice" />
+		<result column="meidunprice" property="meidunprice" />
+		<result column="yincang" property="yincang" />
+		<result column="mingxidanwei" property="mingxidanwei" />
+	</resultMap>
+
+
+	<insert id="insertSeries" parameterType="com.jsdz.jsdzcloud.bean.Series"
+		useGeneratedKeys="true" keyProperty="seriesid">
+		insert into series
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="seriesid != null">
+				seriesid,
+			</if>
+			<if test="seriesname != null">
+				seriesname,
+			</if>
+			<if test="seriesnum != null">
+				seriesnum,
+			</if>
+			<if test="guige != null">
+				guige,
+			</if>
+			<if test="productname != null">
+				productname,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="youwubianhao != null">
+				youwubianhao,
+			</if>
+			<if test="xiliedanwei != null">
+				xiliedanwei,
+			</if>
+			<if test="mingxidanwei != null">
+				mingxidanwei,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="seriesid != null">
+				#{seriesid,jdbcType=INTEGER},
+			</if>
+			<if test="seriesname != null">
+				#{seriesname,jdbcType=VARCHAR},
+			</if>
+			<if test="seriesnum != null">
+				#{seriesnum,jdbcType=VARCHAR},
+			</if>
+			<if test="guige != null">
+				#{guige},
+			</if>
+			<if test="productname != null">
+				#{productname},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if>
+			<if test="youwubianhao != null">
+				#{youwubianhao},
+			</if>
+			<if test="xiliedanwei != null">
+				#{xiliedanwei},
+			</if>
+			<if test="mingxidanwei != null">
+				#{mingxidanwei},
+			</if>
+		</trim>
+	</insert>
+
+<!-- 	<delete id="deletemokuai" parameterType="com.jsdz.jsdzcloud.bean.Series">
+		delete from mokuai where
+		id = #{id}
+	</delete>
+-->
+
+	<select id="selectSeries" parameterType="com.jsdz.jsdzcloud.bean.Series"
+		resultType="com.jsdz.jsdzcloud.bean.Series">
+		select * from series
+		where 1=1
+		and yincang = 1 
+		<if test="seriesid !=null">
+			and seriesid = #{seriesid} 
+		</if>
+		<if test="seriesname !=null">
+			and seriesname like CONCAT('%',#{seriesname},'%') 
+		</if>
+		<if test="seriesnum !=null">
+			and seriesnum like CONCAT('%',#{seriesnum},'%') 
+		</if>
+		<if test="yincang != null">
+			and yincang = #{yincang}
+		</if>
+		<if test="productnum != null and productnum !=''">
+			and productnum like #{productnum}
+		</if>
+		group by seriesid
+		order by paixu
+	</select>
+	
+	<update id="updateSeries" parameterType="com.jsdz.jsdzcloud.bean.Series">
+		update series
+		<set>
+			<trim suffixOverrides=",">
+				<if test="seriesname !=null and seriesname !=''">
+					seriesname = #{seriesname},
+				</if>
+				<if test="seriesnum !=null and seriesnum !=''">
+					seriesnum = #{seriesnum},
+				</if>
+				<if test="seriesphoto !=null and seriesphoto !=''">
+					seriesphoto = #{seriesphoto},
+				</if>
+				<if test="description != null and description !=''">
+					description = #{description},
+				</if>
+				<if test="xiliedanwei != null and xiliedanwei !=''">
+					xiliedanwei = #{xiliedanwei},
+				</if>
+				<if test="guige != null and guige !=''">
+					guige = #{guige},
+				</if>
+				<if test="yincang != null">
+					yincang = #{yincang},
+				</if>
+				<if test="productname != null and productname !=''">
+					productname = #{productname},
+				</if>
+				<if test="mingxidanwei != null and mingxidanwei !=''">
+					mingxidanwei = #{mingxidanwei},
+				</if>
+			</trim>
+		</set>
+		where seriesid = #{seriesid}
+	</update>
+	
+	
+	
+	
+	
+	
+	
+		<insert id="insertProduct"
+		parameterType="java.util.List" useGeneratedKeys="true"
+		keyProperty="productinid">
+		insert into product_information
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			productnum,
+			productseriesid,
+			gongyou,
+			weight,
+			xianhuoandfucai,yincang
+		</trim>
+		<trim prefix="values">
+			<foreach collection="list" index="index"
+				item="productInformation" separator=",">
+				(
+				#{productInformation.productnum,jdbcType=VARCHAR},
+				#{productInformation.series.seriesid},
+				#{productInformation.gongyou},
+				#{productInformation.weight},
+				#{productInformation.xianhuoandfucai},1
+				)
+			</foreach>
+		</trim>
+	</insert>
+	
+	
+	<update id="updateProduct"
+		parameterType="com.jsdz.jsdzcloud.bean.ProductInformation">
+		update product_information
+		<set>
+			<trim suffixOverrides=",">
+				<if test="series.seriesid !=null">
+					productseriesid = #{series.seriesid} ,
+				</if>
+				<if test="productphoto !=null">
+					productphoto = #{productphoto} ,
+				</if>
+				<if test="productnum !=null">
+					productnum = #{productnum} ,
+				</if>
+				<if test="gongyou != null">
+					gongyou = #{gongyou} ,
+				</if>
+				<if test="xianhuoandfucai != null">
+					xianhuoandfucai = #{xianhuoandfucai},
+				</if>
+				<if test="invenbaojing != null">
+					invenbaojing = #{invenbaojing},
+				</if>
+				<if test="yincang != null">
+					yincang = #{yincang},
+				</if>
+			</trim>
+		</set>
+		where productinid = #{productinid}
+	</update>
+	
+	
+	<select id="selectProduct" parameterType="com.jsdz.jsdzcloud.bean.ProductInformation" resultMap="ProductInformationMapper">
+		select * from product_information pin
+		left join series ser on pin.productseriesid = ser.seriesid
+		where 1=1
+		and pin.yincang = 1
+		<if test="productnum != null and productnum !=''">
+			and pin.productnum like CONCAT('%',#{productnum},'%')
+		</if>
+		<if test="series.seriesid !=null">
+			and ser.seriesid = #{series.seriesid} 
+		</if>
+		<if test="series.seriesname !=null">
+			and ser.seriesname like CONCAT('%',#{series.seriesname},'%') 
+		</if>
+		<if test="series.seriesnum !=null">
+			and ser.seriesnum like CONCAT('%',#{series.seriesnum},'%') 
+		</if>
+
+	
+	</select>
+
+
+</mapper>
